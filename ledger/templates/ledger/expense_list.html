@@ -1,0 +1,46 @@
+{% extends 'ledger/base.html' %}
+
+{% block header %}
+<div class="row">
+    <h1> {{ user.email }} these are your expenses </h1>
+</div>
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div>
+        {% if expense_list %}
+    </div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th> Date Time</th>
+            <th> Amount </th>
+            <th> Details </th>
+        </tr>
+        </thead>
+        {% for item in expense_list %}
+        <tr>
+            <td>{{item.created_on}}</td>
+            <td> {{item.amount}}</td>
+            <td> {{item.details}} </td>
+            <td><form method="post" action="{% url 'expense_delete' pk=item.pk %}">{% csrf_token %}
+                <input type="submit" value="Delete" class="btn-sm btn-danger"/>
+            </form></td>
+        </tr>
+        {% endfor %}
+        <tr>
+            <td>Total</td>
+            <td>{{ total_expense }}</td>
+        </tr>
+    </table>
+    {% else %}
+    <div class="row">
+        <p> No expenses !! </p>
+    </div>
+    {% endif %}
+    <div>
+        <a class="btn-lg btn-primary" href="{% url "add_item" %}">Add </a>
+    </div>
+</div>
+<!--<div id="django-debug"><pre>{% filter force_escape %}{% debug %}{% endfilter %}</pre></div>-->
+{% endblock %}
